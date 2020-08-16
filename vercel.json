@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/bot/(.+)",
+      "dest": "api/bot?token=$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/shortener?shortcode=$1"
+    }
+  ]
+}
