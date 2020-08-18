@@ -1,0 +1,1 @@
+export const shortUrlPrefix = process.env.SHORT_URL_PREFIX
