@@ -1,13 +1,10 @@
 import { endWithText } from 'vercel-telegram-bot-api/lib/reply'
 
-import { assertAdmin } from '../utils/assert-admin'
 import { shortUrlPrefix } from '../utils/short-url-prefix'
 import { CommandHandler } from '../../types/CommandHandler'
 import { linkExists, createLink } from '../../services/linkService'
 
 export const create: CommandHandler = async (params, context) => {
-  assertAdmin(context)
-
   const [ shortcode, longUrl ] = params
 
   if (!shortcode || !longUrl) {

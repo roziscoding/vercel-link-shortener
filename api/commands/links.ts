@@ -1,13 +1,10 @@
 import { endWithText } from 'vercel-telegram-bot-api/lib/reply'
 
-import { assertAdmin } from '../utils/assert-admin'
 import { getAllLinks } from '../../services/linkService'
 import { shortUrlPrefix } from '../utils/short-url-prefix'
 import { CommandHandler } from '../../types/CommandHandler'
 
 export const links: CommandHandler = async (_, context) => {
-  assertAdmin(context)
-
   const links = await getAllLinks()
 
   if (!links.length) return endWithText('Nenhum link cadastrado', context)
