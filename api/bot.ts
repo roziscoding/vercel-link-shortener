@@ -18,6 +18,7 @@ const assertAdmin = (context: TelegramContext) => {
 }
 
 const handleUpdate = async (req: NowRequest, res: NowResponse) => {
+  const shortUrlPrefix = process.env.SHORT_URL_PREFIX
   const token = process.env.TELEGRAM_TOKEN
 
   if (!token) return res.status(500).end()
@@ -29,7 +30,7 @@ const handleUpdate = async (req: NowRequest, res: NowResponse) => {
           new: async (params, context) => {
             assertAdmin(context)
 
-            const [shortcode, longUrl] = params
+            const [ shortcode, longUrl ] = params
 
             if (!shortcode || !longUrl) {
               const text = 'Uso correto: /new <shortcode> <url completa>'
@@ -41,9 +42,9 @@ const handleUpdate = async (req: NowRequest, res: NowResponse) => {
 
             const newLink = await createLink(shortcode, longUrl)
 
-            const replyText = `Link \`${newLink._id.toHexString()}\` criado. \`${
+            const replyText = `Link \`${newLink._id.toHexString()}\` criado.\n${shortUrlPrefix}/${
               newLink.shortcode
-            }\` -> ${newLink.longUrl}`
+              } -> ${newLink.longUrl}`
 
             return endWithText(replyText, context, {
               linkPreview: false,
@@ -58,7 +59,7 @@ const handleUpdate = async (req: NowRequest, res: NowResponse) => {
 
             if (!links.length) return endWithText('Nenhum link cadastrado', context)
 
-            const text = links.map(link => `\`${link.shortcode}\` -> ${link.longUrl}`).join('\n')
+            const text = links.map(link => `${shortUrlPrefix}/${link.shortcode}\ -> ${link.longUrl}`).join('\n')
 
             return endWithText(text, context, {
               linkPreview: false,
@@ -66,7 +67,7 @@ const handleUpdate = async (req: NowRequest, res: NowResponse) => {
               parseMode: 'Markdown' as any
             })
           },
-          remove: async ([shortcode], context) => {
+          remove: async ([ shortcode ], context) => {
             assertAdmin(context)
 
             if (!shortcode) return endWithText('Uso correto: /remove <shortcode>', context)
