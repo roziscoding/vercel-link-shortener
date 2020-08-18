@@ -2,7 +2,7 @@
   "routes": [
     {
       "src": "/bot/(.+)",
-      "dest": "api/bot?token=$1"
+      "dest": "/api/bot?token=$1"
     },
     {
       "src": "/(.*)",
