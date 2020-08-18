@@ -1,7 +1,7 @@
 import { ShortenedLink } from '../types/ShortenedLink'
 import { Collection, MongoClient, ObjectId } from 'mongodb'
 
-const withCollection = async <TReturn>(
+const withCollection = async <TReturn> (
   fn: (collection: Collection) => TReturn
 ): Promise<TReturn> => {
   const dbUri = process.env.DB_URI

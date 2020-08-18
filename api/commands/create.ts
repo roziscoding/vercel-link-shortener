@@ -1,14 +1,14 @@
 import { endWithText } from 'vercel-telegram-bot-api/lib/reply'
 
 import { shortUrlPrefix } from '../utils/short-url-prefix'
-import { CommandHandler } from '../../types/CommandHandler'
-import { linkExists, createLink } from '../../services/linkService'
+import { CommandHandler } from '../types/CommandHandler'
+import { linkExists, createLink } from '../services/linkService'
 
 export const create: CommandHandler = async (params, context) => {
   const [ shortcode, longUrl ] = params
 
   if (!shortcode || !longUrl) {
-    const text = 'Uso correto: /new <shortcode> <url completa>'
+    const text = 'Uso correto: /create <shortcode> <url completa>'
     return endWithText(text, context)
   }
 

@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { getLongUrl } from '../services/linkService'
+import { getLongUrl } from './services/linkService'
 
 const getRedirectUrl = async (shortcode: string | string[]) => {
   const notFoundUrl = process.env.NOTFOUND_URL || 'https://google.com'
