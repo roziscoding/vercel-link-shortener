@@ -1,7 +1,7 @@
 import { NowApiHandler } from '@vercel/node'
 import { createLink, getAllLinks, removeLink } from '../services/linkService'
 
-const getHandler: NowApiHandler = async (req, res) => {
+const getHandler: NowApiHandler = async (_req, res) => {
   const links = await getAllLinks()
 
   res.status(200).json(links)
@@ -16,7 +16,7 @@ const postHandler: NowApiHandler = async (req, res) => {
 
   const link = await createLink(shortcode, url)
 
-  res.status(201).json(link)
+  return res.status(201).json(link)
 }
 
 const deleteHandler: NowApiHandler = async (req, res) => {
@@ -26,7 +26,7 @@ const deleteHandler: NowApiHandler = async (req, res) => {
 
   await removeLink(shortcode)
 
-  res.status(204).end()
+  return res.status(204).end()
 }
 
 const defaultHandler: NowApiHandler = (req, res) => {

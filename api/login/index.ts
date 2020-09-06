@@ -81,7 +81,7 @@ const requestHandler: NowApiHandler = (req, res) => {
 
   const token = jwt.sign(authData, TELEGRAM_TOKEN, jwtOptions)
 
-  res.status(200).json({ token })
+  return res.status(200).json({ token })
 }
 
 export default requestHandler

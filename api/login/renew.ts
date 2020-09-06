@@ -61,7 +61,7 @@ const requestHandler: NowApiHandler = (req, res) => {
 
     const newToken = jwt.sign(payload, TELEGRAM_TOKEN, signOptions)
 
-    res.status(200).json({ token: newToken })
+    return res.status(200).json({ token: newToken })
   } catch (err) {
     if (
       err instanceof JsonWebTokenError ||
@@ -71,7 +71,7 @@ const requestHandler: NowApiHandler = (req, res) => {
       return res.status(401).json({ error: { code: 'invalid_token', message: err.message } })
     }
 
-    res.status(500).json({ error: { code: 'internal_error', message: err.message } })
+    return res.status(500).json({ error: { code: 'internal_error', message: err.message } })
   }
 }
 
