@@ -1,6 +1,13 @@
 {
   "routes": [
     {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/api/links/(.*)",
+      "dest": "/api/links?shortcode=$1"
+    },
+    {
       "src": "/bot/(.+)",
       "dest": "/api/bot?token=$1"
     },
