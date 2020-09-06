@@ -1,5 +1,5 @@
 import { NowApiHandler } from '@vercel/node'
-import { createLink, getAllLinks, removeLink } from '../services/linkService'
+import { createLink, getAllLinks, removeLink } from '../../services/linkService'
 
 const getHandler: NowApiHandler = async (_req, res) => {
   const links = await getAllLinks()
