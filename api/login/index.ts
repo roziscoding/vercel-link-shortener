@@ -2,7 +2,7 @@
 import crypto from 'crypto'
 import jwt, { SignOptions } from 'jsonwebtoken'
 
-import { NowApiHandler } from '@vercel/node'
+import { allowCors } from '../../utils/allow-cors'
 
 const { TELEGRAM_TOKEN } = process.env
 
@@ -45,7 +45,7 @@ function isHashValid(hash: string, checkString: string) {
   return calculatedHash === hash
 }
 
-const requestHandler: NowApiHandler = (req, res) => {
+const requestHandler = allowCors((req, res) => {
   if (!TELEGRAM_TOKEN) return res.status(500).json({ message: 'No TELGRAM_TOKEN variable' })
 
   const authData: TelegramAuthData = req.query as TelegramAuthData
@@ -82,6 +82,6 @@ const requestHandler: NowApiHandler = (req, res) => {
   const token = jwt.sign(authData, TELEGRAM_TOKEN, jwtOptions)
 
   return res.status(200).json({ token })
-}
+})
 
 export default requestHandler

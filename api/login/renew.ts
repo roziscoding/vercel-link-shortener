@@ -5,8 +5,9 @@ import jwt, {
   NotBeforeError,
   TokenExpiredError
 } from 'jsonwebtoken'
-import type { NowApiHandler } from '@vercel/node'
+
 import { TelegramAuthData } from '.'
+import { allowCors } from '../../utils/allow-cors'
 
 const BEARER_REGEX = /Bearer (?:.+)/
 const { TELEGRAM_TOKEN } = process.env
@@ -15,7 +16,7 @@ const validatePayload = (payload: any): payload is TelegramAuthData => {
   return payload && typeof payload !== 'string'
 }
 
-const requestHandler: NowApiHandler = (req, res) => {
+const requestHandler = allowCors((req, res) => {
   if (!TELEGRAM_TOKEN) return res.status(500).json({ message: 'No TELGRAM_TOKEN variable' })
   const { authorization } = req.headers
 
@@ -73,6 +74,6 @@ const requestHandler: NowApiHandler = (req, res) => {
 
     return res.status(500).json({ error: { code: 'internal_error', message: err.message } })
   }
-}
+})
 
 export default requestHandler

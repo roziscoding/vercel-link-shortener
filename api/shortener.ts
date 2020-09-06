@@ -1,4 +1,4 @@
-import { NowRequest, NowResponse } from '@vercel/node'
+import { allowCors } from '../utils/allow-cors'
 import { getLongUrl } from '../services/linkService'
 
 const getRedirectUrl = async (shortcode: string | string[]) => {
@@ -9,12 +9,12 @@ const getRedirectUrl = async (shortcode: string | string[]) => {
   return (await getLongUrl(shortcode)) || notFoundUrl
 }
 
-const redirect = async (req: NowRequest, res: NowResponse) => {
+const redirect = allowCors(async (req, res) => {
   const shortcode = req.query.shortcode
 
   const redirectUrl = await getRedirectUrl(shortcode)
   res.setHeader('Location', redirectUrl)
   return res.status(307).end()
-}
+})
 
 export default redirect

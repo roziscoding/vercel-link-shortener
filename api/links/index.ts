@@ -1,4 +1,6 @@
 import { NowApiHandler } from '@vercel/node'
+
+import { allowCors } from '../../utils/allow-cors'
 import { createLink, getAllLinks, removeLink } from '../../services/linkService'
 
 const getHandler: NowApiHandler = async (_req, res) => {
@@ -33,7 +35,7 @@ const defaultHandler: NowApiHandler = (req, res) => {
   res.status(404).send(`CANNOT ${req.method} /api/links`)
 }
 
-const requestHandler: NowApiHandler = (req, res) => {
+const requestHandler = allowCors((req, res) => {
   const methodHandlers: Record<string, NowApiHandler> = {
     GET: getHandler,
     POST: postHandler,
@@ -44,6 +46,6 @@ const requestHandler: NowApiHandler = (req, res) => {
   const methodHandler = methodHandlers[req.method || 'DEFAULT'] || defaultHandler
 
   return methodHandler(req, res)
-}
+})
 
 export default requestHandler
