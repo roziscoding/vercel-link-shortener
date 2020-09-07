@@ -51,7 +51,7 @@ const requestHandler = allowCors((req, res) => {
 
   const adminId = process.env.ADMIN_ID
 
-  if (adminId && authData.id !== adminId) {
+  if (adminId && `${authData.id}` !== `${adminId}`) {
     return res
       .status(403)
       .json({ error: { code: 'invalid_user_id', message: 'user and admin IDs are not the same' } })
