@@ -2,7 +2,7 @@
 import crypto from 'crypto'
 import jwt, { SignOptions } from 'jsonwebtoken'
 
-import { allowCors } from '../../utils/allow-cors'
+import { allowCors } from '../utils/allow-cors'
 
 const { TELEGRAM_TOKEN } = process.env
 
@@ -47,7 +47,7 @@ function isHashValid(hash: string, checkString: string) {
 const requestHandler = allowCors((req, res) => {
   if (!TELEGRAM_TOKEN) return res.status(500).json({ message: 'No TELGRAM_TOKEN variable' })
 
-  const authData: TelegramAuthData = req.query as TelegramAuthData
+  const authData: TelegramAuthData = req.body as TelegramAuthData
 
   const adminId = process.env.ADMIN_ID
 
@@ -94,8 +94,7 @@ const requestHandler = allowCors((req, res) => {
 
   const token = jwt.sign(payload, TELEGRAM_TOKEN, jwtOptions)
 
-  res.setHeader('Location', `${process.env.LOGIN_REDIREC_URL}?token=${encodeURIComponent(token)}`)
-  return res.status(307).end()
+  return res.status(200).json({ token })
 })
 
 export default requestHandler
