@@ -37,10 +37,9 @@ function createCheckString(data: TelegramAuthData) {
 function isHashValid(hash: string, checkString: string) {
   if (!TELEGRAM_TOKEN) return false
 
-  const calculatedHash = crypto
-    .createHmac('sha256', TELEGRAM_TOKEN)
-    .update(checkString)
-    .digest('hex')
+  const secret = crypto.createHash('sha256').update(TELEGRAM_TOKEN).digest('hex')
+
+  const calculatedHash = crypto.createHmac('sha256', secret).update(checkString).digest('hex')
 
   return calculatedHash === hash
 }
