@@ -37,7 +37,7 @@ function createCheckString(data: TelegramAuthData) {
 function isHashValid(hash: string, checkString: string) {
   if (!TELEGRAM_TOKEN) return false
 
-  const secret = crypto.createHash('sha256').update(TELEGRAM_TOKEN).digest('hex')
+  const secret = crypto.createHash('sha256').update(TELEGRAM_TOKEN).digest()
 
   const calculatedHash = crypto.createHmac('sha256', secret).update(checkString).digest('hex')
 
@@ -82,7 +82,9 @@ const requestHandler = allowCors((req, res) => {
     subject: authData.id
   }
 
-  const token = jwt.sign(authData, TELEGRAM_TOKEN, jwtOptions)
+  const { hash, ...payload } = authData
+
+  const token = jwt.sign(payload, TELEGRAM_TOKEN, jwtOptions)
 
   return res.status(200).json({ token })
 })
