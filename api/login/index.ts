@@ -49,6 +49,14 @@ const requestHandler = allowCors((req, res) => {
 
   const authData: TelegramAuthData = req.query as TelegramAuthData
 
+  const adminId = process.env.ADMIN_ID
+
+  if (adminId && authData.id !== adminId) {
+    return res
+      .status(403)
+      .json({ error: { code: 'invalid_user_id', message: 'user and admin IDs are not the same' } })
+  }
+
   const authDate = parseInt(authData.auth_date, 10)
   const now = Date.now() / 1000
   const authAge = now - authDate
@@ -86,7 +94,8 @@ const requestHandler = allowCors((req, res) => {
 
   const token = jwt.sign(payload, TELEGRAM_TOKEN, jwtOptions)
 
-  return res.status(200).json({ token })
+  res.setHeader('Location', `${process.env.LOGIN_REDIREC_URL}?token=${encodeURIComponent(token)}`)
+  return res.status(307).end()
 })
 
 export default requestHandler
