@@ -7,7 +7,7 @@ import { allowCors } from '../utils/allow-cors'
 const { TELEGRAM_TOKEN } = process.env
 
 export type TelegramAuthData = {
-  id: string
+  id: number
   first_name: string
   username: string
   photo_url: string
@@ -87,7 +87,7 @@ const requestHandler = allowCors((req, res) => {
     audience: 'vercel-link-shortener',
     expiresIn: '1h',
     issuer: 'vercel-link-shortener',
-    subject: authData.id
+    subject: `${authData.id}`
   }
 
   const { hash, ...payload } = authData
