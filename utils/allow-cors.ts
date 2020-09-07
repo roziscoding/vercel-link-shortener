@@ -1,6 +1,4 @@
-import { NowApiHandler } from '@vercel/node'
-
-type ApiHandlerWrapper = (fn: NowApiHandler) => NowApiHandler
+import { ApiHandlerWrapper } from '../types/ApiHandlerWrapper'
 
 export const allowCors: ApiHandlerWrapper = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true')
@@ -16,5 +14,5 @@ export const allowCors: ApiHandlerWrapper = fn => async (req, res) => {
     return
   }
 
-  return await fn(req, res)
+  return fn(req, res)
 }
