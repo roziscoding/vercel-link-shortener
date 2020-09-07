@@ -67,7 +67,11 @@ const requestHandler = allowCors((req, res) => {
 
   if (!isHashValid(authData.hash, checkString)) {
     return res.status(401).json({
-      error: { code: 'invalid_hash', message: 'received hash does not match calculated hash' }
+      error: {
+        code: 'invalid_hash',
+        message: 'received hash does not match calculated hash',
+        checkString
+      }
     })
   }
 
