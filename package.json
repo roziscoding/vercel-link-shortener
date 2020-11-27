@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@types/mongodb": "^3.5.26",
+    "axios": "^0.21.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.0",
     "vercel-telegram-bot-api": "^1.3.0"

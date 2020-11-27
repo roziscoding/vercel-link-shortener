@@ -1,30 +1,12 @@
+import { ObjectId } from 'mongodb'
 import { ShortenedLink } from '../types/ShortenedLink'
-import { Collection, MongoClient, ObjectId } from 'mongodb'
+import { withCollection } from '../utils/with-collection'
 
-const withCollection = async <TReturn> (
-  fn: (collection: Collection) => TReturn
-): Promise<TReturn> => {
-  const dbUri = process.env.DB_URI
-
-  if (!dbUri) throw new Error('No database URI provided')
-
-  const connection = await MongoClient.connect(dbUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-
-  const collection = await connection.db(process.env.DB_NAME).collection('links')
-
-  const result = await fn(collection)
-
-  connection.close()
-
-  return result
-}
+const withLinks = withCollection<ShortenedLink>('links')
 
 export const getLongUrl = async (shortcode: string) =>
-  withCollection(collection =>
-    collection
+  withLinks(links =>
+    links
       .findOne<ShortenedLink>({ shortcode })
       .then(async result => {
         if (!result) return null
@@ -32,17 +14,16 @@ export const getLongUrl = async (shortcode: string) =>
       })
   )
 
-export const getAllLinks = async () =>
-  withCollection(collection => collection.find<ShortenedLink>().toArray())
+export const getAllLinks = async () => withLinks(links => links.find<ShortenedLink>().toArray())
 
 export const linkExists = async (shortcode: string) =>
-  withCollection(collection => collection.countDocuments({ shortcode }).then(count => count > 0))
+  withLinks(links => links.countDocuments({ shortcode }).then(count => count > 0))
 
 export const removeLink = async (shortcode: string) =>
-  withCollection(collection => collection.deleteOne({ shortcode }).then(() => true))
+  withLinks(links => links.deleteOne({ shortcode }).then(() => true))
 
 export const createLink = async (shortcode: string, url: string) =>
-  withCollection(async collection => {
+  withLinks(async links => {
     const id = new ObjectId()
 
     const link: ShortenedLink = {
@@ -51,7 +32,7 @@ export const createLink = async (shortcode: string, url: string) =>
       shortcode
     }
 
-    await collection.insertOne(link)
+    await links.insertOne(link)
 
     return link
   })
