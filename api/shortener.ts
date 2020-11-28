@@ -3,6 +3,7 @@ import { getLongUrl } from '../services/linkService'
 import { addStats } from '../services/statService'
 import { IpLocation } from '../types/IpLocation'
 import { allowCors } from '../utils/allow-cors'
+import { extract } from '../utils/extract'
 
 const getRedirectUrl = async (shortcode: string | string[]) => {
   const notFoundUrl = process.env.NOTFOUND_URL || 'https://google.com'
@@ -26,6 +27,7 @@ const getIpLocation = async (ip: string): Promise<IpLocation | null> => {
 
 const redirect = allowCors(async (req, res) => {
   const shortcode = req.query.shortcode
+  const ref = extract('ref').from(req)
 
   // Does the actual redirect
   const redirectUrl = await getRedirectUrl(shortcode)
@@ -39,7 +41,8 @@ const redirect = allowCors(async (req, res) => {
   await addStats(`${shortcode}`, {
     ip: originIp,
     location,
-    longUrl: redirectUrl
+    longUrl: redirectUrl,
+    ref
   })
 })
 

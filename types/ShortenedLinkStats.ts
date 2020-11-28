@@ -8,4 +8,5 @@ export type ShortenedLinkStats = {
   location: IpLocation | null
   longUrl: string
   date: Date
+  ref: string | null
 }
