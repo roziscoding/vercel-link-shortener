@@ -52,7 +52,7 @@ export function generateToken(
   const jwtOptions: SignOptions = {
     algorithm: 'HS256',
     audience: 'vercel-link-shortener',
-    expiresIn: lifetime ? undefined : '1h',
+    ...(lifetime ? {} : { expiresIn: '1h' }),
     issuer: 'vercel-link-shortener',
     subject: `${authData.id}`
   }
