@@ -44,6 +44,24 @@ function isHashValid(hash: string, checkString: string) {
   return calculatedHash === hash
 }
 
+export function generateToken(
+  authData: Omit<TelegramAuthData, 'hash'> & { hash?: string },
+  TELEGRAM_TOKEN: string,
+  lifetime: boolean = false
+) {
+  const jwtOptions: SignOptions = {
+    algorithm: 'HS256',
+    audience: 'vercel-link-shortener',
+    expiresIn: lifetime ? undefined : '1h',
+    issuer: 'vercel-link-shortener',
+    subject: `${authData.id}`
+  }
+
+  const { hash, ...payload } = authData
+
+  return jwt.sign(payload, TELEGRAM_TOKEN, jwtOptions)
+}
+
 const requestHandler = allowCors((req, res) => {
   if (!TELEGRAM_TOKEN) return res.status(500).json({ message: 'No TELGRAM_TOKEN variable' })
 
@@ -82,17 +100,7 @@ const requestHandler = allowCors((req, res) => {
     })
   }
 
-  const jwtOptions: SignOptions = {
-    algorithm: 'HS256',
-    audience: 'vercel-link-shortener',
-    expiresIn: '1h',
-    issuer: 'vercel-link-shortener',
-    subject: `${authData.id}`
-  }
-
-  const { hash, ...payload } = authData
-
-  const token = jwt.sign(payload, TELEGRAM_TOKEN, jwtOptions)
+  const token = generateToken(authData, TELEGRAM_TOKEN, req.query.lifetime === 'true')
 
   return res.status(200).json({ token })
 })

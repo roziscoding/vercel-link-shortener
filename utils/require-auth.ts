@@ -53,6 +53,6 @@ export const requireAuth: ApiHandlerWrapper = fn => (req, res) => {
       }
     }
 
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: (err as Error).message })
   }
 }
