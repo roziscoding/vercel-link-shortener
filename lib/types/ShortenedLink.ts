@@ -4,4 +4,5 @@ export type ShortenedLink = {
   _id: ObjectId
   shortcode: string
   longUrl: string
+  isPublic: boolean
 }
