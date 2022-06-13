@@ -1,8 +1,8 @@
 import { NowApiHandler } from '@vercel/node'
 
-import { allowCors } from '../utils/allow-cors'
-import { createLink, getAllLinks, removeLink } from '../services/linkService'
-import { requireAuth } from '../utils/require-auth'
+import { allowCors } from '../lib/utils/allow-cors'
+import { createLink, getAllLinks, removeLink } from '../lib/services/linkService'
+import { requireAuth } from '../lib/utils/require-auth'
 
 const getHandler: NowApiHandler = async (_req, res) => {
   const links = await getAllLinks()

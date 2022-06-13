@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { allowCors } from '../utils/allow-cors'
-import { requireAuth } from '../utils/require-auth'
+import { allowCors } from '../lib/utils/allow-cors'
+import { requireAuth } from '../lib/utils/require-auth'
 
 const requestHandler = allowCors(
   requireAuth(async (req, res) => {

@@ -1,7 +1,7 @@
-import { getCountryList, getDailyVisits, getRefList } from '../services/statService'
-import { allowCors } from '../utils/allow-cors'
-import { extract } from '../utils/extract'
-import { requireAuth } from '../utils/require-auth'
+import { getCountryList, getDailyVisits, getRefList } from '../lib/services/statService'
+import { allowCors } from '../lib/utils/allow-cors'
+import { extract } from '../lib/utils/extract'
+import { requireAuth } from '../lib/utils/require-auth'
 
 const shortcodeStats = allowCors(
   requireAuth(async (req, res) => {

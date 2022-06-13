@@ -2,7 +2,7 @@
 import crypto from 'crypto'
 import jwt, { SignOptions } from 'jsonwebtoken'
 
-import { allowCors } from '../utils/allow-cors'
+import { allowCors } from '../lib/utils/allow-cors'
 
 const { TELEGRAM_TOKEN } = process.env
 

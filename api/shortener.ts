@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { getLongUrl } from '../services/linkService'
-import { addStats } from '../services/statService'
-import { IpLocation } from '../types/IpLocation'
-import { allowCors } from '../utils/allow-cors'
-import { extract } from '../utils/extract'
+import { getLongUrl } from '../lib/services/linkService'
+import { addStats } from '../lib/services/statService'
+import { IpLocation } from '../lib/types/IpLocation'
+import { allowCors } from '../lib/utils/allow-cors'
+import { extract } from '../lib/utils/extract'
 
 const getRedirectUrl = async (shortcode: string | string[]) => {
   const notFoundUrl = process.env.NOTFOUND_URL || 'https://google.com'
