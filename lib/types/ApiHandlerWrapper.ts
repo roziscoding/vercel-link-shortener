@@ -1,3 +1,3 @@
-import { NowApiHandler } from '@vercel/node'
+import { VercelApiHandler } from '@vercel/node'
 
-export type ApiHandlerWrapper = (fn: NowApiHandler) => NowApiHandler
+export type ApiHandlerWrapper = (fn: VercelApiHandler) => VercelApiHandler

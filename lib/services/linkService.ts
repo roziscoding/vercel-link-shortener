@@ -22,14 +22,15 @@ export const linkExists = async (shortcode: string) =>
 export const removeLink = async (shortcode: string) =>
   withLinks(links => links.deleteOne({ shortcode }).then(() => true))
 
-export const createLink = async (shortcode: string, url: string) =>
+export const createLink = async (shortcode: string, url: string, isPublic = false) =>
   withLinks(async links => {
     const id = new ObjectId()
 
     const link: ShortenedLink = {
       _id: id,
       longUrl: url,
-      shortcode
+      shortcode,
+      isPublic
     }
 
     await links.insertOne(link)
