@@ -22,6 +22,9 @@ export const linkExists = async (shortcode: string) =>
 export const removeLink = async (shortcode: string) =>
   withLinks(links => links.deleteOne({ shortcode }).then(() => true))
 
+export const setLinkPublic = async (shortcode: string, isPublic: boolean) =>
+  withLinks(links => links.updateOne({ shortcode }, { $set: { isPublic } }).then(() => true))
+
 export const createLink = async (shortcode: string, url: string, isPublic = false) =>
   withLinks(async links => {
     const id = new ObjectId()
