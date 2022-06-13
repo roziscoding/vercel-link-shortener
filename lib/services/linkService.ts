@@ -16,6 +16,13 @@ export const getLongUrl = async (shortcode: string) =>
 
 export const getAllLinks = async () => withLinks(links => links.find<ShortenedLink>().toArray())
 
+export const getPublicLinks = async () =>
+  withLinks(links =>
+    links
+      .find<ShortenedLink>({ isPublic: true })
+      .toArray()
+  )
+
 export const linkExists = async (shortcode: string) =>
   withLinks(links => links.countDocuments({ shortcode }).then(count => count > 0))
 
