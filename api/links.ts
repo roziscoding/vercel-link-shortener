@@ -1,16 +1,16 @@
-import { NowApiHandler } from '@vercel/node'
+import { VercelApiHandler } from '@vercel/node'
 
 import { allowCors } from '../lib/utils/allow-cors'
 import { createLink, getAllLinks, removeLink } from '../lib/services/linkService'
 import { requireAuth } from '../lib/utils/require-auth'
 
-const getHandler: NowApiHandler = async (_req, res) => {
+const getHandler: VercelApiHandler = async (_req, res) => {
   const links = await getAllLinks()
 
   res.status(200).json(links)
 }
 
-const postHandler: NowApiHandler = async (req, res) => {
+const postHandler: VercelApiHandler = async (req, res) => {
   const { shortcode, url } = req.body
 
   if (!shortcode || !url) {
@@ -22,7 +22,7 @@ const postHandler: NowApiHandler = async (req, res) => {
   return res.status(201).json(link)
 }
 
-const deleteHandler: NowApiHandler = async (req, res) => {
+const deleteHandler: VercelApiHandler = async (req, res) => {
   const { shortcode } = req.query
 
   if (!shortcode || Array.isArray(shortcode)) return res.status(404).end()
@@ -32,13 +32,13 @@ const deleteHandler: NowApiHandler = async (req, res) => {
   return res.status(204).end()
 }
 
-const defaultHandler: NowApiHandler = (req, res) => {
+const defaultHandler: VercelApiHandler = (req, res) => {
   res.status(404).send(`CANNOT ${req.method} /api/links`)
 }
 
 const requestHandler = allowCors(
   requireAuth((req, res) => {
-    const methodHandlers: Record<string, NowApiHandler> = {
+    const methodHandlers: Record<string, VercelApiHandler> = {
       GET: getHandler,
       POST: postHandler,
       DELETE: deleteHandler,
